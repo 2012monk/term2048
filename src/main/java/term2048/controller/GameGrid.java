@@ -128,7 +128,6 @@ public class GameGrid {
                 while (src < size) grid[src++][j] = 0;
             }
         }
-
     }
 
     private void fillEmptyRight() {

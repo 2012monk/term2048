@@ -1,0 +1,9 @@
+---
+- tile-2:
+  number: "2"
+  fg: 0
+  bg: 0x0000a
+- tile-4:
+  number: "4"
+  fg: 0x00010
+  bg: 0xff00ff

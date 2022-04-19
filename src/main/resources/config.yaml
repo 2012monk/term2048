@@ -1,0 +1,50 @@
+---
+- tile-2:
+  number: 2
+  fg: 0xeee4da
+  bg: 0x776e65
+- tile-4:
+  number: 4
+  fg: 0xede0c8
+  bg: 0x776e65
+- tile-8:
+  number: 8
+  fg: 0xf9f6f2
+  bg: 0xf9f6f2
+- tile-16:
+  number: 16
+  fg: 0xf9f6f2
+  bg: 0xf9f6f2
+- tile-32:
+  number: 32
+  fg: 0xf9f6f2
+  bg: 0xf9f6f2
+- tile-64:
+  number: 64
+  fg: 0xf9f6f2
+  bg: 0xf65e3b
+- tile-128:
+  number: 128
+  fg: 0xf9f6f2
+  bg: 0xedcf72
+- tile-256:
+  number: 256
+  fg: 0xede0c8
+  bg: 0xedcc61
+- tile-512:
+  number: 512
+  fg: 0xf9f6f2
+  bg: 0xedc850
+- tile-1024:
+  number: 1024
+  fg: 0xf9f6f2
+  bg: 0xedc53f
+- tile-2048:
+  number: 2048
+  fg: 0xf9f6f2
+  bg: 0xedc22e
+- tile-super:
+  number: 0
+  fg: 0xf9f6f2
+  bg: 0x3c3a32
+---

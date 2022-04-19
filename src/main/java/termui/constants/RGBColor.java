@@ -10,14 +10,20 @@ public class RGBColor implements Color {
     private final int green;
     private final int blue;
 
-    RGBColor(int red, int green, int blue) {
+    public RGBColor(int red, int green, int blue) {
         this.red = red;
         this.green = green;
         this.blue = blue;
     }
 
+    public RGBColor(int hex) {
+        this((hex & 0xFF0000) >> RED_SHIFT,
+            (hex & 0x00FF00) >> GREEN_SHIFT,
+            (hex & 0x0000FF) >> BLUE_SHIFT);
+    }
+
     public static RGBColor RGB(int red, int green, int blue) {
-        return new RGBColor(red,green,blue);
+        return new RGBColor(red, green, blue);
     }
 
     @Override
