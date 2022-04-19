@@ -1,0 +1,123 @@
+import org.gradle.internal.jvm.Jvm
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'c'
+}
+group 'org.term2048'
+version '1.0-SNAPSHOT'
+jar.archiveFileName = "term2048.jar"
+var currentDir = project.projectDir.toString()
+
+repositories {
+    mavenCentral()
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'org.assertj:assertj-core:3.22.0'
+}
+
+
+application {
+    mainClass = 'term2048.Application'
+    applicationDefaultJvmArgs = ['-Djava.library.path=./lib:./']
+}
+
+compileJava {
+    options.compilerArgs += ["-h", "src/native"]
+    options.compilerArgs += "-verbose"
+}
+
+compileJava.dependsOn 'unPack'
+
+tasks.register('unPack', Copy) {
+    if (new File('lib/ncurses').exists()) return
+    from tarTree(resources.gzip('lib/ncurses.tar.gz'))
+    into 'bin'
+}
+
+clean {
+//    file( "${rootDir}/lib/ncurses").delete()
+//    file("${rootDir}/lib/libConsole.*").delete()
+}
+
+applicationDistribution.from(layout.buildDirectory.dir("libs/console/shared")) {
+    into 'bin'
+}
+
+tasks.register('install', Copy) {
+    dependsOn 'build'
+    from(layout.buildDirectory)
+    println layout.buildDirectory
+    include "libs/**/*.dylib"
+    eachFile {
+        path = name
+    }
+    includeEmptyDirs = false
+    into 'lib'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'term2048.Application'
+        )
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+jar.dependsOn 'ConsoleSharedLibrary'
+
+model {
+
+    platforms {
+        x86 {
+            architecture "x86"
+        }
+        x64 {
+            architecture "x86_64"
+        }
+    }
+
+    components {
+        Console(NativeLibrarySpec) {
+            targetPlatform "x64"
+            binaries.all {
+                cCompiler.args '-fPIC'
+                cCompiler.args '-v'
+                linker.args '-v'
+
+                cCompiler.args '-I', "${Jvm.current().javaHome}/include"
+                cCompiler.args '-I', "${Jvm.current().javaHome}/include/darwin"
+                cCompiler.args '-I', "${currentDir}/lib/ncurses/include"
+                linker.args '-L', "${currentDir}/lib/ncurses/lib"
+                linker.args '-lncurses'
+            }
+            sources {
+                c {
+                    source {
+                        srcDir "src/native"
+                        include "**/*.c"
+                    }
+                    exportedHeaders {
+                        srcDir "src/native"
+                    }
+                }
+            }
+        }
+    }
+}
