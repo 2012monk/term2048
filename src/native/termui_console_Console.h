@@ -7,14 +7,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#undef termui_console_Console_DEFAULT_FG
-#define termui_console_Console_DEFAULT_FG 16777215L
-#undef termui_console_Console_DEFAULT_BG
-#define termui_console_Console_DEFAULT_BG 0L
 #undef termui_console_Console_DEFAULT_CLEAR_UNIT
 #define termui_console_Console_DEFAULT_CLEAR_UNIT 32L
-#undef termui_console_Console_BIG
-#define termui_console_Console_BIG 100000L
 /*
  * Class:     termui_console_Console
  * Method:    setColorPair
@@ -61,6 +55,14 @@ JNIEXPORT void JNICALL Java_termui_console_Console_drawChar
  * Signature: (IIIIII)V
  */
 JNIEXPORT void JNICALL Java_termui_console_Console_drawBorder
+  (JNIEnv *, jclass, jint, jint, jint, jint, jint, jint);
+
+/*
+ * Class:     termui_console_Console
+ * Method:    drawBorderMinMax
+ * Signature: (IIIIII)V
+ */
+JNIEXPORT void JNICALL Java_termui_console_Console_drawBorderMinMax
   (JNIEnv *, jclass, jint, jint, jint, jint, jint, jint);
 
 /*

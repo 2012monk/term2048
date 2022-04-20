@@ -13,19 +13,21 @@ public enum BasicColor implements Color {
     GREEN(96, 169, 23),
     BLUE(0, 80, 239),
     LIGHT_BLUE(79, 195, 247),
-    MAGENTA(216, 0, 115) ,
+    MAGENTA(216, 0, 115),
     LIME(164, 196, 0),
     PINK(244, 114, 208),
     VIOLET(170, 0, 255),
-    WHITE(255,255,255),
+    WHITE(255, 255, 255),
     GREY400(189, 189, 189),
     GREY500(117, 117, 117),
-    GREY700(97, 97, 97);
+    GREY700(97, 97, 97),
+    DEFAULT_FG(235, 219, 178),
+    DEFAULT_BG(39, 39, 39);
 
     private final Color color;
 
     BasicColor(int red, int green, int blue) {
-        this.color = new RGBColor(red,green,blue);
+        this.color = new RGBColor(red, green, blue);
     }
 
     @Override

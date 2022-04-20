@@ -4,9 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 import term2048.ui.TileInfoRepository;
 import term2048.ui.constants.TileInfo;
 
@@ -20,14 +19,9 @@ public class InfoLoader {
         module.addDeserializer(TileInfo.class, new InfoParser());
         mapper.registerModule(module);
         try {
-            URL url = InfoLoader.class.getClassLoader().getResource(PATH);
-            if (url == null) {
-                throw new IllegalArgumentException("can not find native library");
-            }
-            File file = new File(url.getFile());
-            System.out.println(url.getFile());
-            TileInfoRepository.addInfos(
-                mapper.readValue(file, new TypeReference<>() {}));
+            InputStream is = InfoLoader.class.getClassLoader().getResourceAsStream("config.yaml");
+            TileInfoRepository.addInfos(mapper.readValue(is, new TypeReference<>() {
+            }));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -41,7 +41,7 @@ public class Rectangle implements Space {
     @Override
     public List<Point> getPoints() {
         int x = min.getX();
-        int y= min.getY();
+        int y = min.getY();
         return getBoundary()
             .mapToObj(p -> new Point(p / getWidth() + x, p % getWidth() + y))
             .collect(Collectors.toList());

@@ -1,5 +1,7 @@
 package term2048.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import term2048.exceptions.IllegalShiftException;
 
 public class GameGrid {
@@ -16,6 +18,16 @@ public class GameGrid {
         validateSize(size);
         this.size = DEFAULT_SIZE;
         this.grid = new int[size][size];
+    }
+
+    public List<Integer> getStatus() {
+        List<Integer> arr = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                arr.add(grid[i][j]);
+            }
+        }
+        return arr;
     }
 
     public int[][] getGrid() {

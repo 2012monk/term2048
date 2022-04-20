@@ -27,4 +27,8 @@ public class TileInfoRepository {
     public static List<TileInfo> tiles() {
         return new ArrayList<>(storage.values());
     }
+
+    public static TileInfo getDefaultTile() {
+        return storage.get(-1);
+    }
 }

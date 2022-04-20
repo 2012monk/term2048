@@ -1,6 +1,9 @@
 package termui;
 
+import java.util.List;
+import java.util.Map;
 import termui.constants.Attribute;
+import termui.constants.BorderAttribute;
 
 public interface Buffer {
 
@@ -10,12 +13,13 @@ public interface Buffer {
 
     void setString(Point point, Attribute attribute, String msg);
 
-    void addCell(Cell cell);
-
-    void addString(String msg);
-
     void clear();
 
     void setAttribute(Point point, Attribute attribute);
 
+    List<Cell> getCells();
+
+    Map<Point, Cell> getCellMap();
+
+    void setBorder(Point min, Point max, BorderAttribute attribute);
 }

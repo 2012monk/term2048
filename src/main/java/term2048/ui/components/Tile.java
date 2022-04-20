@@ -1,29 +1,36 @@
 package term2048.ui.components;
 
 import term2048.ui.constants.TileInfo;
+import termui.BorderRectangle;
 import termui.Buffer;
 import termui.Cell;
 import termui.Point;
 import termui.Rectangle;
 import termui.constants.Attribute;
+import termui.constants.BasicColor;
+import termui.constants.BorderAttribute;
 
 public class Tile {
 
-    private static final int WIDTH = 10;
-    private static final int HEIGHT = 5;
-    private Rectangle rectangle;
+    private static final int WIDTH = 12;
+    private static final int HEIGHT = 7;
+    private BorderRectangle rectangle;
     private Rectangle numberRect;
     private TileInfo info;
     private Attribute attribute;
+    private BorderAttribute borderAttribute;
 
-    public Tile(TileInfo info, Point p) {
+    public Tile(TileInfo info, Point min, Point max) {
         this.info = info;
-        this.rectangle = new Rectangle(p, getEnd(p));
+        this.rectangle = new BorderRectangle(min, max);
         this.numberRect = getNumberSpace();
+        borderAttribute = new BorderAttribute(
+            BasicColor.DEFAULT_BG, BasicColor.DEFAULT_FG
+        );
     }
 
-    private Point getEnd(Point p) {
-        return new Point(p.getX() + HEIGHT, p.getY() + WIDTH);
+    public void changeInfo(TileInfo info) {
+        this.info = info;
     }
 
     private Rectangle getNumberSpace() {
@@ -34,12 +41,9 @@ public class Tile {
         return new Rectangle(min, max);
     }
 
-    public void setRectangle(Rectangle rectangle) {
-        this.rectangle = rectangle;
-    }
-
     public void render(Buffer buffer) {
         rectangle.getPoints().forEach(p -> buffer.setCell(p, getCell(p)));
+        buffer.setBorder(rectangle.getBorderMin(), rectangle.getBorderMax(), borderAttribute);
     }
 
     private Cell getCell(Point point) {
@@ -51,5 +55,9 @@ public class Tile {
 
     private int getPadding() {
         return (rectangle.getWidth() - info.getNumberStr().length()) / 2;
+    }
+
+    public Rectangle getRectangle() {
+        return rectangle;
     }
 }

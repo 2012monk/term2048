@@ -13,7 +13,7 @@ class TileTest {
     void test() {
         InfoLoader.load();
         TileInfo info = TileInfoRepository.getTileInfo(4);
-        Tile tile = new Tile(info, new Point(4, 4));
+        Tile tile = new Tile(info,new Point(4, 4), new Point(16,16));
         StdBuffer buffer = new StdBuffer(20, 20);
         tile.render(buffer);
         buffer.flush();

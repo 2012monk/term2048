@@ -2,7 +2,11 @@ package termui;
 
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import termui.constants.Attribute;
+import termui.constants.BorderAttribute;
 import termui.constants.Color;
 
 public class StdBuffer implements Buffer {
@@ -10,12 +14,16 @@ public class StdBuffer implements Buffer {
     private final PrintStream printStream = new PrintStream(System.out);
     private final Rectangle rectangle;
     private Cell[] cellBuffer;
-    private int cursor = 0;
 
     public StdBuffer(int height, int width) {
         this.rectangle = new Rectangle(0, 0, height, width);
         this.cellBuffer = new Cell[height * width];
         clear();
+    }
+
+    public StdBuffer(Rectangle rectangle) {
+        this.rectangle = rectangle;
+        this.cellBuffer = new Cell[rectangle.getWidth() * rectangle.getHeight()];
     }
 
     @Override
@@ -24,7 +32,8 @@ public class StdBuffer implements Buffer {
     }
 
     private int point(Point point) {
-        return point.getX() * rectangle.getWidth() + point.getY();
+        int zero = rectangle.getMin().getX() * rectangle.getWidth() + rectangle.getMin().getY();
+        return point.getX() * rectangle.getWidth() + point.getY() - zero;
     }
 
     @Override
@@ -40,19 +49,6 @@ public class StdBuffer implements Buffer {
     }
 
     @Override
-    public void addCell(Cell cell) {
-        cellBuffer[cursor - 1] = cell;
-    }
-
-    @Override
-    public void addString(String msg) {
-        Point p = new Point(cursor / rectangle.getWidth(), cursor % rectangle.getWidth());
-        setString(p, msg);
-        setString(p, msg);
-        cursor += msg.length();
-    }
-
-    @Override
     public void clear() {
         Arrays.fill(cellBuffer, null);
     }
@@ -63,6 +59,29 @@ public class StdBuffer implements Buffer {
             cellBuffer[point(point)] = new Cell();
         }
         cellBuffer[point(point)].setAttribute(attribute);
+    }
+
+    @Override
+    public List<Cell> getCells() {
+        return List.of(cellBuffer);
+    }
+
+    @Override
+    public Map<Point, Cell> getCellMap() {
+        Map<Point, Cell> out = new HashMap<>();
+        List<Point> points = rectangle.getPoints();
+        for (int i = 0; i < cellBuffer.length; i++) {
+            if (cellBuffer[i] == null) {
+                continue;
+            }
+            out.put(points.get(i), cellBuffer[i]);
+        }
+        return out;
+    }
+
+    @Override
+    public void setBorder(Point min, Point max, BorderAttribute attribute) {
+
     }
 
     private String colorEscape(Cell cell) {

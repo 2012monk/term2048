@@ -1,6 +1,7 @@
 package termui;
 
 import termui.constants.Attribute;
+import termui.constants.BasicColor;
 import termui.constants.Color;
 import termui.constants.RGBColor;
 
@@ -8,11 +9,10 @@ public class Cell {
 
     private static final char DEFAULT_CHAR = ' ';
     private char content;
-    private Color fg;
-    private Color bg;
+    private Color fg = BasicColor.DEFAULT_FG;
+    private Color bg = BasicColor.DEFAULT_BG;
 
-    public Cell() {
-    }
+    public Cell() {}
 
     public Cell(char content) {
         this.content = content;

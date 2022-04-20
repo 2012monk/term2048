@@ -35,7 +35,7 @@ application {
 }
 
 compileJava {
-    options.compilerArgs += ["-h", "src/native"]
+    options.compilerArgs += ["-h", "${rootDir}/src/native"]
     options.compilerArgs += "-verbose"
 }
 

@@ -1,4 +1,8 @@
 ---
+- default-tile:
+  number: -1
+  fg: 0xeee4da
+  bg: 0xeee4da
 - tile-2:
   number: 2
   fg: 0xeee4da
@@ -10,15 +14,15 @@
 - tile-8:
   number: 8
   fg: 0xf9f6f2
-  bg: 0xf9f6f2
+  bg: 0xf2b179
 - tile-16:
   number: 16
   fg: 0xf9f6f2
-  bg: 0xf9f6f2
+  bg: 0xf59563
 - tile-32:
   number: 32
   fg: 0xf9f6f2
-  bg: 0xf9f6f2
+  bg: 0xf67c5f
 - tile-64:
   number: 64
   fg: 0xf9f6f2
