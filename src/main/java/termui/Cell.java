@@ -1,7 +1,6 @@
 package termui;
 
 import termui.constants.Attribute;
-import termui.constants.BasicColor;
 import termui.constants.Color;
 import termui.constants.RGBColor;
 
@@ -9,10 +8,10 @@ public class Cell {
 
     private static final char DEFAULT_CHAR = ' ';
     private char content;
-    private Color fg = BasicColor.DEFAULT_FG;
-    private Color bg = BasicColor.DEFAULT_BG;
+    private Attribute attribute;
 
-    public Cell() {}
+    public Cell() {
+    }
 
     public Cell(char content) {
         this.content = content;
@@ -24,8 +23,7 @@ public class Cell {
 
     public Cell(char content, Color fg, Color bg) {
         this.content = content;
-        this.fg = fg;
-        this.bg = bg;
+        this.attribute = new Attribute(fg, bg);
     }
 
     public Cell(char content, int fgHex, int bgHex) {
@@ -37,14 +35,14 @@ public class Cell {
     }
 
     public Color getFg() {
-        return fg;
+        return attribute.getFg();
     }
 
     public Color getBg() {
-        return bg;
+        return attribute.getBg();
     }
 
     public void setAttribute(Attribute attribute) {
-
+        this.attribute = attribute;
     }
 }

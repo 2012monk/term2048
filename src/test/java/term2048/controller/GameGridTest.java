@@ -20,6 +20,23 @@ class GameGridTest {
     }
 
     @Test
+    void testCase1() {
+        GameGrid testcase = setUpGrid(
+            2, 2, 2, 2,
+            8, 0, 0, 2,
+            16, 0, 8, 32,
+            32, 0, 0, 64
+        );
+        List<Integer> ans = List.of(
+            4,4,0,0,
+            8,2,0,0,
+            16,8,32,0,
+            32,64,0,0
+        );
+        testGameLogic(testcase, ans, GameGrid::shiftLeft);
+    }
+
+    @Test
     void gameLogicTest() {
         GameGrid testcase = setUpGrid(
             2, 2, 2, 2,

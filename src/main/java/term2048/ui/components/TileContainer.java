@@ -10,7 +10,7 @@ import termui.CursesTerminal;
 import termui.Point;
 import termui.Rectangle;
 
-public class TileGrid {
+public class TileContainer {
 
     private static final int TILE_WIDTH = 12;
     private static final int TILE_HEIGHT = 7;
@@ -18,7 +18,7 @@ public class TileGrid {
     private List<Tile> tiles = new ArrayList<>();
     private int tileCount;
 
-    public TileGrid(int tileCount, Point min) {
+    public TileContainer(int tileCount, Point min) {
         this.tileCount = tileCount;
         this.rectangle = new BorderRectangle(min, getEndPoint(min));
         init();

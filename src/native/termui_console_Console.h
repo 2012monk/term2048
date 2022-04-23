@@ -43,6 +43,14 @@ JNIEXPORT jint JNICALL Java_termui_console_Console_readBytes
 
 /*
  * Class:     termui_console_Console
+ * Method:    blockingReadBytes
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_termui_console_Console_blockingReadBytes
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     termui_console_Console
  * Method:    drawChar
  * Signature: (IICII)V
  */

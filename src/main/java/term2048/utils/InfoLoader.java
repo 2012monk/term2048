@@ -19,7 +19,7 @@ public class InfoLoader {
         module.addDeserializer(TileInfo.class, new InfoParser());
         mapper.registerModule(module);
         try {
-            InputStream is = InfoLoader.class.getClassLoader().getResourceAsStream("config.yaml");
+            InputStream is = InfoLoader.class.getClassLoader().getResourceAsStream(PATH);
             TileInfoRepository.addInfos(mapper.readValue(is, new TypeReference<>() {
             }));
         } catch (IOException e) {

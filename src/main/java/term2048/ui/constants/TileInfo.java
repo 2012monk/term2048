@@ -36,8 +36,12 @@ public class TileInfo {
         return number;
     }
 
+    public int length() {
+        return numberStr.length();
+    }
+
     public Cell getNumberAt(int pos) {
-        if (number < 0 || pos < 0 || pos >= numberStr.length()) {
+        if (number <= 0 || pos < 0 || pos >= numberStr.length()) {
             return defaultCell;
         }
         return new Cell(numberStr.charAt(pos), defaultCell.getFg(), defaultCell.getBg());

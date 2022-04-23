@@ -18,6 +18,14 @@ public class Char {
         this.number = key.getNumber();
     }
 
+    public static Char of(char ch) {
+        return new Char(ch);
+    }
+
+    public static Char of(SpecialKeyCode key) {
+        return new Char(key);
+    }
+
     public char getChar() {
         return (char) number;
     }

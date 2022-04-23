@@ -46,6 +46,13 @@ void drawCorners(int x, int y, int width, int height) {
 JNIEXPORT jint JNICALL Java_termui_console_Console_readBytes (JNIEnv *env, jclass clazz) {
   return wgetch(stdscr);
 }
+JNIEXPORT jint JNICALL Java_termui_console_Console_blockingReadBytes (JNIEnv *env, jclass clazz) {
+  timeout(-1);
+  int c = wgetch(stdscr);
+  nodelay(stdscr, TRUE);
+  return c;
+}
+
 
 JNIEXPORT jint JNICALL Java_termui_console_Console_getScreenWidth (JNIEnv *env, jobject obj) {
   return COLS;

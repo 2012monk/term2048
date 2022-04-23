@@ -5,12 +5,12 @@
   bg: 0xeee4da
 - tile-2:
   number: 2
-  fg: 0xeee4da
-  bg: 0x776e65
+  fg: 0x776e65
+  bg: 0xeee4da
 - tile-4:
   number: 4
-  fg: 0xede0c8
-  bg: 0x776e65
+  fg: 0x776e65
+  bg: 0xede0c8
 - tile-8:
   number: 8
   fg: 0xf9f6f2

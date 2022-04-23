@@ -52,6 +52,8 @@ public class Console {
 
     public static synchronized native int readBytes();
 
+    public static synchronized native int blockingReadBytes();
+
     private static native void drawChar(int x, int y, char chr, int fg, int bg);
 
     private static native void drawBorder(int x, int y, int width, int height, int fg,
@@ -79,9 +81,6 @@ public class Console {
     private static native void refresh();
 
     public static void drawBorder(Point min, Point max, BorderAttribute attribute) {
-//        drawBorder(min.getX(), min.getY()
-//            , max.getY() - min.getY(),max.getX() - min.getX(),
-//            attribute.getFg().getHex(), attribute.getBg().getHex());
         drawBorderMinMax(min.getX(), min.getY(), max.getX(), max.getY(), attribute.getFg().getHex(),
             attribute.getBg().getHex());
     }

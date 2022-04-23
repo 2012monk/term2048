@@ -9,11 +9,12 @@ import termui.Rectangle;
 import termui.constants.Attribute;
 import termui.constants.BasicColor;
 import termui.constants.BorderAttribute;
+import termui.constants.Color;
+import termui.constants.RGBColor;
 
 public class Tile {
 
-    private static final int WIDTH = 12;
-    private static final int HEIGHT = 7;
+    private static final Color BORDER_COLOR = new RGBColor(0xDDDDDD);
     private BorderRectangle rectangle;
     private Rectangle numberRect;
     private TileInfo info;
@@ -21,23 +22,23 @@ public class Tile {
     private BorderAttribute borderAttribute;
 
     public Tile(TileInfo info, Point min, Point max) {
-        this.info = info;
         this.rectangle = new BorderRectangle(min, max);
-        this.numberRect = getNumberSpace();
         borderAttribute = new BorderAttribute(
-            BasicColor.DEFAULT_BG, BasicColor.DEFAULT_FG
+            BasicColor.DEFAULT_BG, BORDER_COLOR
         );
+        changeInfo(info);
     }
 
     public void changeInfo(TileInfo info) {
         this.info = info;
+        this.numberRect = getNumberSpace();
     }
 
     private Rectangle getNumberSpace() {
         Point c = rectangle.getCenterPoint();
         int padding = getPadding();
         Point min = new Point(c.getX(), rectangle.getMin().getY() + padding);
-        Point max = new Point(c.getX(), min.getY() + info.getNumberStr().length() - 1);
+        Point max = new Point(c.getX(), min.getY() + info.length());
         return new Rectangle(min, max);
     }
 
@@ -54,7 +55,7 @@ public class Tile {
     }
 
     private int getPadding() {
-        return (rectangle.getWidth() - info.getNumberStr().length()) / 2;
+        return (rectangle.getWidth() - info.length()) / 2;
     }
 
     public Rectangle getRectangle() {

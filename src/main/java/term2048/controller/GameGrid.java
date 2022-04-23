@@ -3,6 +3,7 @@ package term2048.controller;
 import java.util.ArrayList;
 import java.util.List;
 import term2048.exceptions.IllegalShiftException;
+import termui.Point;
 
 public class GameGrid {
 
@@ -53,8 +54,12 @@ public class GameGrid {
         grid[x][y] = number;
     }
 
+    public void setNumber(Point point, int number) {
+        setNumber(point.getX(), point.getY(), number);
+    }
+
     public void shiftLeft() {
-        validateHorizontalShift();
+        validateShiftLeft();
         fillEmptyLeft();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size - 1; j++) {
@@ -70,7 +75,7 @@ public class GameGrid {
     }
 
     public void shiftRight() {
-        validateHorizontalShift();
+        validateShiftRight();
         fillEmptyRight();
         for (int i = 0; i < size; i++) {
             for (int j = size - 1; j > 0; j--) {
@@ -86,7 +91,7 @@ public class GameGrid {
     }
 
     public void shiftUp() {
-        validateVerticalShift();
+        validateShiftUp();
         fillEmptyUp();
         for (int j = 0; j < size; j++) {
             for (int i = 0; i < size - 1; i++) {
@@ -103,7 +108,7 @@ public class GameGrid {
     }
 
     public void shiftDown() {
-        validateVerticalShift();
+        validateShiftDown();
         fillEmptyDown();
         for (int j = 0; j < size; j++) {
             for (int i = size - 1; i > 0; i--) {
@@ -166,36 +171,79 @@ public class GameGrid {
         }
     }
 
-    private void validateHorizontalShift() {
-        if (isMovableHorizontal()) {
-            return;
-        }
-        throw new IllegalShiftException();
-    }
-
-    private void validateVerticalShift() {
-        if (isMovableVertical()) {
-            return;
-        }
-        throw new IllegalShiftException();
-    }
-
-    private boolean isMovableHorizontal() {
+    private void validateShiftLeft() {
         for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size - 1; j++) {
-                if (grid[i][j] == 0) return true;
-                if (grid[i][j] == grid[i][j + 1]) return true;
+            int j = 0, k;
+            while (j < size - 1 && grid[i][j] != 0) {
+                if (grid[i][j] == grid[i][j + 1]) return;
+                j++;
             }
+            k = j;
+            while (k < size && grid[i][k] == 0) k++;
+            if (k != j && k < size) return;
         }
-        return false;
+        throw new IllegalShiftException();
     }
 
-    private boolean isMovableVertical() {
-        for (int j = 0; j < size; j++) {
-            for (int i = 0; i < size - 1; i++) {
-                if (grid[i][j] == 0) return true;
-                if (grid[i][j] == grid[i + 1][j]) return true;
+    private void validateShiftUp() {
+        for (int i = 0; i < size; i++) {
+            int j = 0, k;
+            while (j < size - 1 && grid[j][i] != 0) {
+                if (grid[j][i] == grid[j + 1][i]) return;
+                j++;
             }
+            k = j;
+            while (k < size && grid[k][i] == 0) k++;
+            if (k != j && k < size) return;
+        }
+        throw new IllegalShiftException();
+    }
+
+    private void validateShiftRight() {
+        for (int i = 0; i < size; i++) {
+            int j = size - 1, k;
+            while (j > 0 && grid[i][j] != 0) {
+                if (grid[i][j] == grid[i][j - 1]) return;
+                j--;
+            }
+            k = j;
+            while (k >= 0 && grid[i][k] == 0) k--;
+            if (k != j && k >= 0) return;
+        }
+        throw new IllegalShiftException();
+    }
+
+    private void validateShiftDown() {
+        for (int i = 0; i < size; i++) {
+            int j = size - 1,k;
+            while (j > 0 && grid[j][i] != 0) {
+                if (grid[j][i] == grid[j-1][i]) return;
+                j--;
+            }
+            k = j;
+            while (k >= 0 && grid[k][i] == 0) k--;
+            if (k != j && k >= 0) return;
+        }
+        throw new IllegalShiftException();
+    }
+
+    public boolean haveMovableDirection() {
+        try {
+            validateShiftLeft();
+            return true;
+        }catch (Exception ignore) {}
+        try {
+            validateShiftRight();
+            return true;
+        } catch (Exception ignore) {}
+        try {
+            validateShiftUp();
+            return true;
+        } catch (Exception ignore) {}
+        try {
+            validateShiftDown();
+            return true;
+        } catch (Exception ignored) {
         }
         return false;
     }
@@ -211,5 +259,16 @@ public class GameGrid {
         if (size > 5) {
             throw new IllegalArgumentException("size should be < 5");
         }
+    }
+
+    public List<Point> getEmptyPoints() {
+        List<Point> points = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (grid[i][j] != 0) continue;
+                points.add(new Point(i, j));
+            }
+        }
+        return points;
     }
 }

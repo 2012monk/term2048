@@ -2,6 +2,7 @@ package termui.constants;
 
 public class BorderAttribute extends Attribute {
 
+    private static final char EMPTY_BORDER = ' ';
     private char leftUpperCorner;
     private char rightUpperCorner;
     private char leftLowerCorner;
