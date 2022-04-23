@@ -130,13 +130,15 @@ public class GameGrid {
     }
 
     public boolean haveMovableDirection() {
-        for (int i = 0; i < size - 1; i++) {
-            for (int j = 0; j < size - 1; j++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 if (grid[i][j] == 0) {
                     return true;
                 }
-                if (grid[i][j] == grid[i + 1][j] ||
-                    grid[i][j] == grid[i][j + 1]) {
+                if (i < size - 1 && grid[i][j] == grid[i + 1][j]) {
+                    return true;
+                }
+                if (j < size - 1 && grid[i][j] == grid[i][j + 1]) {
                     return true;
                 }
             }
