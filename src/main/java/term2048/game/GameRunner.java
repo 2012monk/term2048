@@ -4,7 +4,7 @@ import term2048.controller.GameController;
 import term2048.controller.GameGrid;
 import term2048.exceptions.IllegalShiftException;
 import term2048.ui.components.TileContainer;
-import termui.Point;
+import termui.Buffer;
 import termui.TerminalInputListener;
 import termui.constants.Char;
 
@@ -12,7 +12,12 @@ public class GameRunner {
 
     private GameController controller;
     private TileContainer tileGrid;
+    private Buffer buffer;
     private boolean isRunning;
+
+    public GameRunner(Buffer buffer) {
+        this.buffer = buffer;
+    }
 
     public void run() {
         setUpGame();
@@ -30,7 +35,7 @@ public class GameRunner {
         try {
             GameGrid grid = controller.move(ch);
             tileGrid.updateStatus(grid);
-            tileGrid.render();
+            tileGrid.render(buffer);
         } catch (IllegalShiftException | IllegalArgumentException ignored) {
         }
     }
@@ -46,10 +51,10 @@ public class GameRunner {
     }
 
     private void setUpGame() {
-        this.tileGrid = new TileContainer(4, new Point(0, 20));
+        this.tileGrid = new TileContainer(4, buffer);
         this.isRunning = true;
         this.controller = new GameController();
         tileGrid.updateStatus(controller.createNewGame(4));
-        tileGrid.render();
+        tileGrid.render(buffer);
     }
 }

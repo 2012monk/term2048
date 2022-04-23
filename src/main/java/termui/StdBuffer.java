@@ -84,6 +84,16 @@ public class StdBuffer implements Buffer {
 
     }
 
+    @Override
+    public int getWidth() {
+        return rectangle.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return rectangle.getHeight();
+    }
+
     private String colorEscape(Cell cell) {
         Color bg = cell.getBg();
         Color fg = cell.getFg();

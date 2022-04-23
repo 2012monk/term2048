@@ -78,6 +78,16 @@ public class CellBuffer implements Buffer {
 
     }
 
+    @Override
+    public int getWidth() {
+        return rectangle.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return rectangle.getHeight();
+    }
+
     private Point point(int i) {
         return new Point(i / rectangle.getWidth(), i % rectangle.getWidth());
     }

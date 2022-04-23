@@ -1,6 +1,7 @@
 package term2048.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -15,6 +16,7 @@ public class InfoLoader {
 
     public static void load() {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         SimpleModule module = new SimpleModule();
         module.addDeserializer(TileInfo.class, new InfoParser());
         mapper.registerModule(module);

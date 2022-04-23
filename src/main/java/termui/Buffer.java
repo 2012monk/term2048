@@ -22,4 +22,10 @@ public interface Buffer {
     Map<Point, Cell> getCellMap();
 
     void setBorder(Point min, Point max, BorderAttribute attribute);
+
+    int getWidth();
+
+    int getHeight();
+
+    void flush();
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import term2048.controller.GameGrid;
 import term2048.ui.TileInfoRepository;
 import term2048.ui.constants.TileInfo;
-import termui.CursesTerminal;
+import termui.Buffer;
 import termui.Point;
 import termui.Rectangle;
 
@@ -13,10 +13,24 @@ public class TileContainer {
 
     private static final int TILE_WIDTH = 12;
     private static final int TILE_HEIGHT = 7;
-    private CursesTerminal buffer = new CursesTerminal();
     private Rectangle rectangle;
     private List<Tile> tiles = new ArrayList<>();
     private int tileCount;
+
+    public TileContainer(int tileCount, Buffer buffer) {
+        this.tileCount = tileCount;
+        Point p = new Point(0, (buffer.getWidth() - getWidth()) / 2);
+        this.rectangle = new Rectangle(p, new Point(getHeight(), p.getY() + getWidth()));
+        init();
+    }
+
+    private int getWidth() {
+        return TILE_WIDTH * tileCount - tileCount - 1;
+    }
+
+    private int getHeight() {
+        return TILE_HEIGHT * tileCount - tileCount - 1;
+    }
 
     public TileContainer(int tileCount, Point min) {
         this.tileCount = tileCount;
@@ -24,10 +38,9 @@ public class TileContainer {
         init();
     }
 
-    public void render() {
-        buffer.lock();
+    public void render(Buffer buffer) {
         tiles.forEach(t -> t.render(buffer));
-        buffer.unlock();
+        buffer.flush();
     }
 
     public void updateStatus(GameGrid grid) {

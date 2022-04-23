@@ -6,9 +6,13 @@ import termui.console.Console;
 import termui.constants.Attribute;
 import termui.constants.BorderAttribute;
 
-public class CursesTerminal implements Buffer{
+public class CursesTerminal implements Buffer {
 
     private Cell[] cells = new Cell[Console.getScreenHeight() * Console.getScreenWidth()];
+
+    public CursesTerminal() {
+        Console.lock();
+    }
 
     @Override
     public void setCell(Point point, Cell cell) {
@@ -49,11 +53,19 @@ public class CursesTerminal implements Buffer{
         Console.drawBorder(min, max, attribute);
     }
 
-    public void lock() {
-        Console.lock();
+    @Override
+    public int getWidth() {
+        return Console.getScreenWidth();
     }
 
-    public void unlock() {
+    @Override
+    public int getHeight() {
+        return Console.getScreenHeight();
+    }
+
+    @Override
+    public void flush() {
         Console.unlock();
+        Console.lock();
     }
 }
