@@ -5,8 +5,7 @@ plugins {
     id 'application'
     id 'c'
 }
-group 'org.term2048'
-version '1.0-SNAPSHOT'
+group 'term2048'
 jar.archiveFileName = "term2048.jar"
 var currentDir = project.projectDir.toString()
 
