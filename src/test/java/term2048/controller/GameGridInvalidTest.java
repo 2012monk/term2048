@@ -1,10 +1,10 @@
 package term2048.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import term2048.exceptions.IllegalShiftException;
 
@@ -25,7 +25,7 @@ public class GameGridInvalidTest {
             4, 8, 4, 0,
             0, 0, 0, 0,
             2, 0, 0, 2,
-            0, 0, 0,0
+            0, 0, 0, 0
         ), GameGrid::shiftLeft);
     }
 
@@ -35,7 +35,7 @@ public class GameGridInvalidTest {
             16, 4, 0, 0,
             0, 0, 0, 0,
             0, 0, 0, 0,
-            4, 2, 0,0
+            4, 2, 0, 0
         ), GameGrid::shiftRight);
     }
 
@@ -121,6 +121,12 @@ public class GameGridInvalidTest {
     void testFullGridRight() {
         testInvalidMove(getFixedGrid(), GameGrid::shiftRight);
     }
+
+    @Test
+    void testEndCondition() {
+        assertThat(getFixedGrid().haveMovableDirection()).isFalse();
+    }
+
 
     private GameGrid getFixedGrid() {
         return GridTestUtil.setUpGrid(

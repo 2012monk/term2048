@@ -7,9 +7,15 @@ import termui.Point;
 
 public class GameGrid {
 
+    private static final int RIGHT = 0;
+    private static final int LEFT = 1;
+    private static final int UP = 3;
+    private static final int DOWN = 2;
+    private static final int[][] direction = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
     private static final int DEFAULT_SIZE = 4;
     private final int[][] grid;
-    private int size;
+    private final int[] backward, forward;
+    private final int size;
 
     public GameGrid() {
         this(DEFAULT_SIZE);
@@ -19,6 +25,12 @@ public class GameGrid {
         validateSize(size);
         this.size = DEFAULT_SIZE;
         this.grid = new int[size][size];
+        this.forward = new int[size];
+        this.backward = new int[size];
+        for (int i = 0; i < size; i++) {
+            forward[i] = i;
+            backward[i] = size - i - 1;
+        }
     }
 
     public List<Integer> getStatus() {
@@ -35,14 +47,14 @@ public class GameGrid {
         return grid;
     }
 
-    public int getSize() {
-        return size;
-    }
-
     public void setGrid(int[][] src) {
         for (int i = 0; i < size; i++) {
             System.arraycopy(src[i], 0, this.grid[i], 0, size);
         }
+    }
+
+    public int getSize() {
+        return size;
     }
 
     public int getNumber(int x, int y) {
@@ -58,192 +70,74 @@ public class GameGrid {
         setNumber(point.getX(), point.getY(), number);
     }
 
+
     public void shiftLeft() {
-        validateShiftLeft();
-        fillEmptyLeft();
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size - 1; j++) {
-                if (grid[i][j] == 0 || grid[i][j] != grid[i][j + 1]) {
-                    continue;
-                }
-                grid[i][j] += grid[i][j + 1];
-                grid[i][j + 1] = 0;
-                j++;
-            }
-        }
-        fillEmptyLeft();
+        shift(forward, forward, RIGHT);
     }
 
     public void shiftRight() {
-        validateShiftRight();
-        fillEmptyRight();
-        for (int i = 0; i < size; i++) {
-            for (int j = size - 1; j > 0; j--) {
-                if (grid[i][j] != grid[i][j - 1]) {
-                    continue;
-                }
-                grid[i][j] += grid[i][j - 1];
-                grid[i][j - 1] = 0;
-                j--;
-            }
-        }
-        fillEmptyRight();
+        shift(forward, backward, LEFT);
     }
 
     public void shiftUp() {
-        validateShiftUp();
-        fillEmptyUp();
-        for (int j = 0; j < size; j++) {
-            for (int i = 0; i < size - 1; i++) {
-                if (grid[i][j] == 0 || grid[i][j] != grid[i + 1][j]) {
-                    continue;
-                }
-                grid[i][j] += grid[i + 1][j];
-                grid[i + 1][j] = 0;
-                i++;
-
-            }
-        }
-        fillEmptyUp();
+        shift(forward, forward, DOWN);
     }
 
     public void shiftDown() {
-        validateShiftDown();
-        fillEmptyDown();
-        for (int j = 0; j < size; j++) {
-            for (int i = size - 1; i > 0; i--) {
-                if (grid[i][j] != grid[i - 1][j]) {
-                    continue;
-                }
-                grid[i][j] += grid[i - 1][j];
-                grid[i - 1][j] = 0;
-                i--;
-            }
-        }
-        fillEmptyDown();
+        shift(backward, forward, UP);
     }
 
-    private void fillEmptyDown() {
-        for (int j = 0; j < size; j++) {
-            for (int i = size - 1; i > 0; i--) {
-                if (grid[i][j] != 0) continue;
-                int x = i, src = i;
-                while (x >= 0 && grid[x][j] == 0) x--;
-                while (x >= 0) grid[src--][j] = grid[x--][j];
-                while (src >= 0) grid[src--][j] = 0;
+    private void shift(int[] outer, int[] inner, int dir) {
+        boolean shifted = false;
+        for (int i : outer) {
+            for (int j : inner) {
+                shifted |= shiftCell(i, j, dir);
             }
         }
-    }
-
-    private void fillEmptyUp() {
-        for (int j = 0; j < size; j++) {
-            for (int i = 0; i < size - 1; i++) {
-                if (grid[i][j] != 0) continue;
-                int x = i, src = i;
-                while (x < size && grid[x][j] == 0) x++;
-                while (x < size) grid[src++][j] = grid[x++][j];
-                while (src < size) grid[src++][j] = 0;
-            }
-        }
-    }
-
-    private void fillEmptyRight() {
-        for (int i = 0; i < size; i++) {
-            for (int j = size - 1; j > 0; j--) {
-                if (grid[i][j] != 0) continue;
-                int y = j, src = j;
-                while (y >= 0 && grid[i][y] == 0) y--;
-                while (y >= 0) grid[i][src--] = grid[i][y--];
-                while (src >= 0) grid[i][src--] = 0;
-            }
-        }
-    }
-
-    private void fillEmptyLeft() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size - 1; j++) {
-                if (grid[i][j] != 0) continue;
-                int y = j, src = j;
-                while (y < size && grid[i][y] == 0) y++;
-                while (y < size) grid[i][src++] = grid[i][y++];
-                while (src < size) grid[i][src++] = 0;
-            }
-        }
-    }
-
-    private void validateShiftLeft() {
-        for (int i = 0; i < size; i++) {
-            int j = 0, k;
-            while (j < size - 1 && grid[i][j] != 0) {
-                if (grid[i][j] == grid[i][j + 1]) return;
-                j++;
-            }
-            k = j;
-            while (k < size && grid[i][k] == 0) k++;
-            if (k != j && k < size) return;
+        if (shifted) {
+            return;
         }
         throw new IllegalShiftException();
     }
 
-    private void validateShiftUp() {
-        for (int i = 0; i < size; i++) {
-            int j = 0, k;
-            while (j < size - 1 && grid[j][i] != 0) {
-                if (grid[j][i] == grid[j + 1][i]) return;
-                j++;
-            }
-            k = j;
-            while (k < size && grid[k][i] == 0) k++;
-            if (k != j && k < size) return;
-        }
-        throw new IllegalShiftException();
+    private boolean withinBound(int i, int j) {
+        return i >= 0 && i < size && j >= 0 && j < size;
     }
 
-    private void validateShiftRight() {
-        for (int i = 0; i < size; i++) {
-            int j = size - 1, k;
-            while (j > 0 && grid[i][j] != 0) {
-                if (grid[i][j] == grid[i][j - 1]) return;
-                j--;
-            }
-            k = j;
-            while (k >= 0 && grid[i][k] == 0) k--;
-            if (k != j && k >= 0) return;
+    private boolean shiftCell(int i, int j, int dir) {
+        int x = i + direction[dir][0], y = j + direction[dir][1];
+        while (withinBound(x, y) && grid[x][y] == 0) {
+            x += direction[dir][0];
+            y += direction[dir][1];
         }
-        throw new IllegalShiftException();
-    }
-
-    private void validateShiftDown() {
-        for (int i = 0; i < size; i++) {
-            int j = size - 1,k;
-            while (j > 0 && grid[j][i] != 0) {
-                if (grid[j][i] == grid[j-1][i]) return;
-                j--;
-            }
-            k = j;
-            while (k >= 0 && grid[k][i] == 0) k--;
-            if (k != j && k >= 0) return;
+        if (!withinBound(x, y)) {
+            return false;
         }
-        throw new IllegalShiftException();
+        if (grid[i][j] == 0) {
+            grid[i][j] = grid[x][y];
+            grid[x][y] = 0;
+            shiftCell(i, j, dir);
+            return true;
+        }
+        if (grid[i][j] == grid[x][y]) {
+            grid[i][j] *= 2;
+            grid[x][y] = 0;
+            return true;
+        }
+        return false;
     }
 
     public boolean haveMovableDirection() {
-        try {
-            validateShiftLeft();
-            return true;
-        }catch (Exception ignore) {}
-        try {
-            validateShiftRight();
-            return true;
-        } catch (Exception ignore) {}
-        try {
-            validateShiftUp();
-            return true;
-        } catch (Exception ignore) {}
-        try {
-            validateShiftDown();
-            return true;
-        } catch (Exception ignored) {
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - 1; j++) {
+                if (grid[i][j] == 0) {
+                    return true;
+                }
+                if (grid[i][j] == grid[i + 1][j] ||
+                    grid[i][j] == grid[i][j + 1]) {
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -265,7 +159,9 @@ public class GameGrid {
         List<Point> points = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (grid[i][j] != 0) continue;
+                if (grid[i][j] != 0) {
+                    continue;
+                }
                 points.add(new Point(i, j));
             }
         }

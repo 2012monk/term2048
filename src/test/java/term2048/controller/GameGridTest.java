@@ -16,7 +16,7 @@ class GameGridTest {
 
     void testGameLogic(GameGrid grid, List<Integer> answer, Consumer<GameGrid> move) {
         move.accept(grid);
-        assertThat(answer).isEqualTo(getResult(grid));
+        assertThat(getResult(grid)).isEqualTo(answer);
     }
 
     @Test
@@ -102,19 +102,19 @@ class GameGridTest {
             {0, 0, 4, 4},
             {0, 4, 4, 2}
         };
-        int[][] answer = {
-            {0, 0, 0, 0},
-            {0, 0, 0, 2},
-            {0, 0, 8, 8},
-            {4, 8, 8, 2}
-        };
+        List<Integer> answer = List.of(
+            0, 0, 0, 0,
+            0, 0, 0, 2,
+            0, 0, 8, 8,
+            4, 8, 8, 2
+        );
         grid.setGrid(testCase);
         grid.shiftDown();
-        for (int i = 0; i < answer.length; i++) {
-            for (int j = 0; j < answer.length; j++) {
-                assertEquals(answer[i][j], grid.getNumber(i, j));
-            }
-        }
+        testGameLogic(setUpGrid(
+            2, 0, 4, 2,
+             2, 4, 4, 4,
+            0, 0, 4, 4,
+            0, 4, 4, 2),  answer, GameGrid::shiftDown);
     }
 
     @Test
