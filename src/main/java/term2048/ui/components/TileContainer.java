@@ -13,9 +13,9 @@ public class TileContainer {
 
     private static final int TILE_WIDTH = 12;
     private static final int TILE_HEIGHT = 7;
-    private Rectangle rectangle;
-    private List<Tile> tiles = new ArrayList<>();
-    private int tileCount;
+    private final Rectangle rectangle;
+    private final List<Tile> tiles = new ArrayList<>();
+    private final int tileCount;
 
     public TileContainer(int tileCount, Buffer buffer) {
         this.tileCount = tileCount;
@@ -24,18 +24,22 @@ public class TileContainer {
         init();
     }
 
+    public TileContainer(int tileCount, Point min) {
+        this.tileCount = tileCount;
+        this.rectangle = new Rectangle(min, getEndPoint(min));
+        init();
+    }
+
+    public Point getMax() {
+        return rectangle.getMax();
+    }
+
     private int getWidth() {
         return TILE_WIDTH * tileCount - tileCount - 1;
     }
 
     private int getHeight() {
         return TILE_HEIGHT * tileCount - tileCount - 1;
-    }
-
-    public TileContainer(int tileCount, Point min) {
-        this.tileCount = tileCount;
-        this.rectangle = new Rectangle(min, getEndPoint(min));
-        init();
     }
 
     public void render(Buffer buffer) {

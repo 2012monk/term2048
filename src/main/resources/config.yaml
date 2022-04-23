@@ -1,8 +1,8 @@
 ---
 - default-tile:
-  number: -1
-  fg: 0xeee4da
-  bg: 0xeee4da
+  number: 0
+  fg: 0xccc0b5
+  bg: 0xccc0b5
 - tile-2:
   number: 2
   fg: 0x776e65
@@ -48,7 +48,7 @@
   fg: 0xf9f6f2
   bg: 0xedc22e
 - tile-super:
-  number: 0
+  number: -1
   fg: 0xf9f6f2
   bg: 0x3c3a32
 ---

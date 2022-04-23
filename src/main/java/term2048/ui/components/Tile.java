@@ -8,15 +8,14 @@ import termui.Cell;
 import termui.Point;
 import termui.Rectangle;
 import termui.constants.Attribute;
-import termui.constants.BasicColor;
 import termui.constants.BorderAttribute;
 import termui.constants.Color;
 import termui.constants.RGBColor;
 
 public class Tile {
 
-    private static final Color BORDER_COLOR = new RGBColor(0xD7A86E);
-    private BorderRectangle rectangle;
+    private static final Color BORDER_COLOR = new RGBColor(0xBBACA0);
+    private final BorderRectangle rectangle;
     private Rectangle numberRect;
     private TileInfo info;
     private Attribute attribute;
@@ -24,7 +23,7 @@ public class Tile {
     public Tile(TileInfo info, Point min, Point max) {
         this.rectangle = new BorderRectangle(
             new BorderAttribute(
-                BorderStyle.EMPTY, BasicColor.DEFAULT_BG, BORDER_COLOR),
+                BorderStyle.EMPTY, BORDER_COLOR, BORDER_COLOR),
             min, max);
         changeInfo(info);
     }
@@ -44,7 +43,8 @@ public class Tile {
 
     public void render(Buffer buffer) {
         rectangle.getPoints().forEach(p -> buffer.setCell(p, getCell(p)));
-        buffer.setBorder(rectangle.getBorderMin(), rectangle.getBorderMax(), rectangle.getAttribute());
+        buffer.setBorder(rectangle.getBorderMin(), rectangle.getBorderMax(),
+            rectangle.getAttribute());
     }
 
     private Cell getCell(Point point) {

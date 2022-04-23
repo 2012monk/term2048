@@ -16,6 +16,7 @@ public class GameGrid {
     private final int[][] grid;
     private final int[] backward, forward;
     private final int size;
+    private int score;
 
     public GameGrid() {
         this(DEFAULT_SIZE);
@@ -122,6 +123,7 @@ public class GameGrid {
         if (grid[i][j] == grid[x][y]) {
             grid[i][j] *= 2;
             grid[x][y] = 0;
+            score += grid[i][j];
             return true;
         }
         return false;
@@ -166,5 +168,9 @@ public class GameGrid {
             }
         }
         return points;
+    }
+
+    public int getScore() {
+        return score;
     }
 }
