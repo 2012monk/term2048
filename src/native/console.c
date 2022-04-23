@@ -89,7 +89,7 @@ JNIEXPORT void JNICALL Java_termui_console_Console_refresh (JNIEnv *env, jclass 
   refresh();
 }
 
-JNIEXPORT void JNICALL Java_termui_console_Console_drawBorder (JNIEnv *env, jclass clazz, jint x, jint y, jint width, jint height, jint fg, jint bg) {
+JNIEXPORT void JNICALL Java_termui_console_Console_drawBorder__IIIIII (JNIEnv *env, jclass clazz, jint x, jint y, jint width, jint height, jint fg, jint bg) {
   startDraw();
   int n = set_color_attr(fg, bg);
   width--;
@@ -97,6 +97,26 @@ JNIEXPORT void JNICALL Java_termui_console_Console_drawBorder (JNIEnv *env, jcla
   drawHorizontalLine(x, y, width, height);
   drawVerticalLine(x, y, width, height);
   drawCorners(x, y, width, height);
+  unset_color_attr(n);
+  endDraw();
+}
+
+
+JNIEXPORT void JNICALL Java_termui_console_Console_drawBorder__IIIIIICCCCCC
+  (JNIEnv *env, jclass clazz, jint x, jint y, jint x1, jint y1, jint fg, jint bg, jchar luc, jchar ruc, jchar llc, jchar rlc, jchar vl, jchar hl) {
+
+  startDraw();
+  int n = set_color_attr(fg, bg);
+  int width = y1 - y - 1;
+  int height = x1 - x - 1;
+  mvhline(x, y, hl, width);
+  mvhline(x + height, y, hl, width);
+  mvvline(x, y, vl, height);
+  mvvline(x, y + width, vl, height);
+  mvaddch(x, y, luc);
+  mvaddch(x + height, y, llc);
+  mvaddch(x, y + width, ruc);
+  mvaddch(x + height, y + width, rlc);
   unset_color_attr(n);
   endDraw();
 }

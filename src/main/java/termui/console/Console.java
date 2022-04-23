@@ -59,6 +59,9 @@ public class Console {
     private static native void drawBorder(int x, int y, int width, int height, int fg,
         int bg);
 
+    private static native void drawBorder(int x0, int y0, int x1, int y1, int fg, int bg,
+        char luc, char ruc, char llc, char rlc, char vl, char hl);
+
     private static native void drawBorderMinMax(int x0, int y0, int x1, int y1, int fg, int bg);
 
     private static native void drawString(int x, int y, String text, int fg, int bg);
@@ -81,7 +84,14 @@ public class Console {
     private static native void refresh();
 
     public static void drawBorder(Point min, Point max, BorderAttribute attribute) {
-        drawBorderMinMax(min.getX(), min.getY(), max.getX(), max.getY(), attribute.getFg().getHex(),
-            attribute.getBg().getHex());
+        drawBorder(min.getX(), min.getY(), max.getX(), max.getY(), attribute.getFg().getHex(),
+            attribute.getBg().getHex(),
+            attribute.getLeftUpperCorner(),
+            attribute.getRightUpperCorner(),
+            attribute.getLeftLowerCorner(),
+            attribute.getRightLowerCorner(),
+            attribute.getVerticalLine(),
+            attribute.getHorizontalLine()
+            );
     }
 }

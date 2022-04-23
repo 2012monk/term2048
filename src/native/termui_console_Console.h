@@ -62,8 +62,16 @@ JNIEXPORT void JNICALL Java_termui_console_Console_drawChar
  * Method:    drawBorder
  * Signature: (IIIIII)V
  */
-JNIEXPORT void JNICALL Java_termui_console_Console_drawBorder
+JNIEXPORT void JNICALL Java_termui_console_Console_drawBorder__IIIIII
   (JNIEnv *, jclass, jint, jint, jint, jint, jint, jint);
+
+/*
+ * Class:     termui_console_Console
+ * Method:    drawBorder
+ * Signature: (IIIIIICCCCCC)V
+ */
+JNIEXPORT void JNICALL Java_termui_console_Console_drawBorder__IIIIIICCCCCC
+  (JNIEnv *, jclass, jint, jint, jint, jint, jint, jint, jchar, jchar, jchar, jchar, jchar, jchar);
 
 /*
  * Class:     termui_console_Console
