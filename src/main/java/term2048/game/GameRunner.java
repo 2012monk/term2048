@@ -1,5 +1,6 @@
 package term2048.game;
 
+import term2048.controller.GameController;
 import term2048.controller.GameGrid;
 import term2048.exceptions.IllegalShiftException;
 import term2048.ui.components.TileContainer;
@@ -9,9 +10,7 @@ import termui.constants.Char;
 
 public class GameRunner {
 
-    private GameGrid grid;
-    private Player player;
-    private ComputerPlayer computer;
+    private GameController controller;
     private TileContainer tileGrid;
     private boolean isRunning;
 
@@ -24,22 +23,20 @@ public class GameRunner {
     }
 
     private void proceedTurn(Char ch) {
-        if (!player.isMoveKey(ch)) {
+        if (!controller.containsKey(ch)) {
             controlGame(ch);
             return;
         }
         try {
-            player.consumeTurn(ch, grid);
-            computer.consumeTurn(grid);
-            isRunning = isGameRunning(grid);
+            GameGrid grid = controller.move(ch);
             tileGrid.updateStatus(grid);
             tileGrid.render();
-        } catch (IllegalShiftException ignore) {
+        } catch (IllegalShiftException | IllegalArgumentException ignored) {
         }
     }
 
-    private boolean isGameRunning(GameGrid grid) {
-        return grid.haveMovableDirection();
+    private boolean isRunning() {
+        return controller.isRunning() && isRunning;
     }
 
     private void controlGame(Char ch) {
@@ -48,18 +45,11 @@ public class GameRunner {
         }
     }
 
-    private boolean isRunning() {
-        return isRunning;
-    }
-
     private void setUpGame() {
-        this.grid = new GameGrid(4);
-        this.player = new Player();
-        this.computer = new ComputerPlayer();
-        this.tileGrid = new TileContainer(4, new Point(10, 40));
+        this.tileGrid = new TileContainer(4, new Point(0, 20));
         this.isRunning = true;
-        computer.setInitialNumbers(grid);
-        tileGrid.updateStatus(grid);
+        this.controller = new GameController();
+        tileGrid.updateStatus(controller.createNewGame(4));
         tileGrid.render();
     }
 }
