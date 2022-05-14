@@ -9,18 +9,30 @@ Implemented in Java
 
 only tested in MacOs
 
-## Installation
-
-unzip or tar distribution file
-
-```shell
-cd term2048/bin
-./term2048
-```
+## How to Run
 
 build from source
 
 ```shell
+git clone https://github.com/2012monk/term2048.git
+cd term2048
 gradle build
-./run
+mv build/distributions/term2048.tar .
+```
+
+or download distribution file
+
+unzip distribution file
+
+```shell
+uzip term2048.zip
+# or
+# tar xzf term2048.tar
+```
+
+run
+
+```shell
+cd term2048/bin
+./term2048
 ```

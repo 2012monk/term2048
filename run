@@ -1,7 +1,0 @@
-#!/bin/sh
-
-cd build/distributions
-dir=$(find . -name term2048*.tar -exec basename -s .tar {} '+')
-tar -xzf term2048*.tar
-cd "$dir/bin"
-./term2048
